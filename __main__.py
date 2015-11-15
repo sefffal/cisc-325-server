@@ -2,17 +2,19 @@
 from flask import Flask
 
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEBase import MIMEBase
-from email.MIMEText import MIMEText
-from email import Encoders
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email import encoders
 import os
 
 gmail_user = "architechsdoom@gmail.com"
-gmail_pwd = "costcohotdog"
+gmail_pwd = raw_input('pwd > ')
 
 
 app = Flask(__name__)
+app.debug = True
 
 @app.route('/')
 def index():
@@ -43,7 +45,7 @@ def mail(to, subject, text, attach):
 
    part = MIMEBase('application', 'octet-stream')
    part.set_payload(open(attach, 'rb').read())
-   Encoders.encode_base64(part)
+   encoders.encode_base64(part)
    part.add_header('Content-Disposition',
            'attachment; filename="%s"' % os.path.basename(attach))
    msg.attach(part)
